@@ -38,20 +38,14 @@ class Broadening_function():
             return (1 / sc.pi) * (broadening / H_eV) * (((x / H_eV) - (energia / H_eV))**2 + (broadening / H_eV)**2)**-1
 
 class Spectroscopy():
-    def __init__(self, tipo, file_in):
+    def __init__(self, tipo):
         self.tipo = tipo
-        self.file_in = file_in
 
-    def intensity():
-        if tipo == 'opa'
-            return file_in.oscillator()
-        if tipo == 'tpa':
-            return file_in.sigma()
-    def __call__(tipo, k, x, intensity):
+    def __call__(self, tipo, k, x):
         if tipo == 'opa':
-            return k * x * intensity 
+            return k * x 
         if tipo == 'tpa':
-            return k * x**2 * intensity
+            return k * x**2 
 
 
 
@@ -61,16 +55,15 @@ def nm(wavelength, a=((h*c)/e)*10**9):
     return a/(wavelength)
 
 
-def plot_nm(energie, intensity, broadening, spectroscopy, lineshape , legend=None, linestyle=None, ax=plt):
-    k=prefactors[spectroscopy]
+def plot_nm(energie, intensity, broadening, spectroscopy_type, lineshape , legend=None, linestyle=None, ax=plt):
+    k=prefactors[spectroscopy_type]
     e1=0
     x=np.linspace(1,20,1000)
     function = Broadening_function(lineshape, broadening, x, energie)
-    spectroscopy = spectroscopy(k, intensity)
-    intensity = spectroscopy.intensity()
+    spectroscopy = Spectroscopy(spectroscopy_type)
     ax.axhline(linewidth=1, color='black')
     for i in range(len(energie)):
-        e1 += spectroscopy(i) * function(lineshape, broadening, x, energie[i])
+        e1 += spectroscopy(spectroscopy_type, k,x) * intensity[i] * function(lineshape, broadening, x, energie[i])
     ax.plot(nm(x), e1, label=legend, linestyle=linestyle)
 
 # def plot_nm(energie, rotatory, broadening, function, spectroscopy, legend=None, linestyle=None, ax=plt):
