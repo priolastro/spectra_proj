@@ -52,7 +52,6 @@ class Output_file:
                     out_output = file_object.readlines()
                     for i, line in enumerate(out_output):
                         if 'Excited State' in line:
-                            print(line)
                             row = line.split()
                             osc.append(float(row[8].replace('f=',''))) 
                 return osc
@@ -77,6 +76,7 @@ class Output_file:
                     Rot.append(rot)
                 return Rot
             elif self.spectroscopy == 'tpcd':
+                ##Equation 64, 65, 66, 67 J.Chem.Phys.125,064113 (2006)
                 b1,b2,b3=6,2,-2  #Two left circularly polarized (parallel)
                 P=Matrix_P(self.file_path, self.ROOTS)
                 M=Matrix_M(self.file_path, self.ROOTS)
