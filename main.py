@@ -26,7 +26,10 @@ args = parser.parse_args()
 
 
 file_in = Output_file(args.file, args.Program, args.Spectroscopy)
+print(file_in)
 e = file_in.energies()
-osc = file_in.oscillator()
-plot_nm(e, osc, args.Broadening, args.Spectroscopy, args.Lineshape)
+intensities = file_in.intensities()
+print(e)
+print(intensities)
+plot_nm(e, intensities, args.Broadening, args.Spectroscopy, args.Lineshape)
 plt.show()

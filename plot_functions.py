@@ -41,11 +41,13 @@ class Spectroscopy():
     def __init__(self, tipo):
         self.tipo = tipo
 
-    def __call__(self, tipo, k, x):
-        if tipo == 'opa':
-            return k * x 
-        if tipo == 'tpa':
-            return k * x**2 
+    def __call__(self, tipo, k, x, intensities):
+        if tipo == 'opa' or tipo == 'ecd':
+            return k * x * intensities
+        if tipo == 'tpa' :
+            return k * x**2 * intensities[0] #prende delta 
+        if tipo == 'tpcd':
+            return k * x**2 * intensities #prende delta 
 
 
 
@@ -63,23 +65,5 @@ def plot_nm(energie, intensity, broadening, spectroscopy_type, lineshape , legen
     spectroscopy = Spectroscopy(spectroscopy_type)
     ax.axhline(linewidth=1, color='black')
     for i in range(len(energie)):
-        e1 += spectroscopy(spectroscopy_type, k,x) * intensity[i] * function(lineshape, broadening, x, energie[i])
+        e1 += spectroscopy(spectroscopy_type, k,x, intensity[i])  * function(lineshape, broadening, x, energie[i])
     ax.plot(nm(x), e1, label=legend, linestyle=linestyle)
-
-# def plot_nm(energie, rotatory, broadening, function, spectroscopy, legend=None, linestyle=None, ax=plt):
-#     k=prefactors[spectroscopy]
-#     e1=0
-#     x=np.linspace(1,20,1000)
-#     ax.axhline(linewidth=1, color='black')
-#     for i in range(len(energie)):
-#         if function == 'Lorentzian':
-#             if spectroscopy == 'ecd':
-#                 e1 += k * x * rotatory[i] * Lorentzian(broadening, x, energie[i])
-#             elif spectroscopy == 'tpcd':
-#                 e1 += k * x**2 * rotatory[i] * Lorentzian(broadening, x, energie[i])
-#         elif function == 'gaussian':
-#             if spectroscopy == 'ecd':
-#                 e1 += k * x * rotatory[i] * Gaussian(broadening, x, energie[i])
-#             elif spectroscopy == 'tpcd':
-#                 e1 += k * x**2 * rotatory[i] * Gaussian(broadening, x, energie[i])
-#     ax.plot(nm(x), e1, label=legend, linestyle=linestyle)
